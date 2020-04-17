@@ -3,7 +3,7 @@ import React from "react";
 /*eslint-disable*/
 export function TrackDetails({ track }) {
 
-  return (
+  return (!track ? null :
     <div className="ui segment">
       <div className="ui items">
         <div className="item">
@@ -11,7 +11,7 @@ export function TrackDetails({ track }) {
             <img src={track.thumbnailURL} alt="" />
           </div>
           <div className="content">
-            <a className="header" href>{track.title}</a>
+            <div className="header">{track.title}</div>
             <div className="meta">
               <span>{track.artist}</span>
               <span>{track.length}</span>
