@@ -22,7 +22,7 @@ async function start() {
   /*const newPlaylist = await playlistsStorage.create({ title: 'Something', tracks: [] })
   console.log(newPlaylist);*/
 
-  const newPlaylists = await playlistsStorage.fill(examplePlaylists);
+  const newPlaylists = await playlistsStorage.fill(examplePlaylists); //töröl, újra berak
 
   render();
 }
