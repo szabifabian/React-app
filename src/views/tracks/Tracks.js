@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { TrackForm } from './TrackForm';
-import { exampleTracks } from '../../domain/track';
 import { Track } from './Track';
+import { PlaylistsContext } from '../../state/PlaylistsProvider';
+import { TracksContext } from '../../state/TracksProvider';
 
 export function Tracks() {
-    const tracks = exampleTracks;
 
-    const [open, setOpen] = useState(true);
+    const { tracks, addNewTrack, editTrack, deleteTrack } = useContext(TracksContext);
+
+    const [open, setOpen] = useState(false);
+    const [editedTrack, setEditedTrack] = useState({});
+
+    const { deleteTrackFromMultiplePlaylists } = useContext(PlaylistsContext);
 
     const handleOpen = () => {
         setOpen(true);
@@ -14,10 +19,34 @@ export function Tracks() {
     const handleClose = () => {
         setOpen(false);
     }
+
+    const handleSubmit = track => {
+        if (!track.id) {
+            addNewTrack(track);
+        } else {
+            editTrack(track);
+        }
+    }
+
+    const handleNew = () => {
+        setEditedTrack({});
+        handleOpen();
+    }
+
+    const handleEdit = track => {
+        setEditedTrack(track);
+        handleOpen();
+    }
+
+    const handleDelete = track => {
+        deleteTrack(track);
+        deleteTrackFromMultiplePlaylists(track.id);
+    }
+
     return (
         <>
             <div className="ui container">
-                <button onClick={handleOpen} className="ui right floated green button" id="newModal">
+                <button onClick={handleNew} className="ui right floated green button" id="newModal">
                     <i className="plus icon"></i> New track</button>
                 <h1>Tracks</h1>
                 <table className="ui celled striped table">
@@ -30,12 +59,12 @@ export function Tracks() {
                     </thead>
                     <tbody>
                         {tracks.map(track =>
-                            <Track key={track.id} track={track} />)}
+                            <Track onEdit={() => handleEdit(track)} onDelete={() => handleDelete(track)} key={track.id} track={track} />)}
                     </tbody>
                 </table>
             </div>
 
-            <TrackForm open={open} onClose={handleClose} />
+            <TrackForm track={editedTrack} open={open} onClose={handleClose} onSubmit={handleSubmit} />
         </>
     );
 }

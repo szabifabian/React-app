@@ -44,6 +44,13 @@ class PlaylistsStorage {
         const playlists = await this.db.find({});
         return playlists.map(playlist => ({ ...playlist, id: playlist._id }));
     }
+
+    async update(playlist) {
+        if (!playlist.id) return;
+        playlist._id = playlist.id;
+        await this.db.update({ _id: playlist._id }, playlist, {});
+        return playlist;
+    }
 }
 
 const playlistsDb = new Nedb({ filename: 'playlists.nedb', autoload: true });
