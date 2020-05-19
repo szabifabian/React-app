@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-import { PlaylistsContext } from '../../state/PlaylistsProvider';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPlaylists } from '../../state/playlists/selectors';
+import { addTrakcToPLaylist } from '../../state/playlists/actions';
 
 
 export function Track({ track, onEdit, onDelete }) {
@@ -9,16 +11,20 @@ export function Track({ track, onEdit, onDelete }) {
         setOpen(true);
     }
 
+    const playlists = useSelector(getPlaylists);
+
+
+    const dispacth = useDispatch()
+
     const handleClose = (e) => {
         if (e && e.target && e.target.matches('.dropdown *:not(.icon)')) return;
         setOpen(false);
     }
     const [open, setOpen] = useState(false);
 
-    const { playlists, addTrackToPlaylist } = useContext(PlaylistsContext);
 
     const handleClick = (playlistId, trackId) => {
-        addTrackToPlaylist(playlistId, trackId);
+        dispacth(addTrakcToPLaylist(playlistId, trackId));
         handleClose();
     }
 

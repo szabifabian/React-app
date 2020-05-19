@@ -67,9 +67,9 @@ export function TrackForm({ open, onClose, onSubmit, track }) {
                 </div>
             </div>
             <div className="actions">
-                <button onClick={onClose} className="ui black deny button">
+                <button type="button" onClick={onClose} className="ui black deny button">
                     Cancel</button>
-                <button className="ui positive right labeled icon button">
+                <button type="submit" className="ui positive right labeled icon button">
                     Add
                 <i className="plus icon"></i>
                 </button>

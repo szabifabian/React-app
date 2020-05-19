@@ -1,17 +1,19 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { TrackForm } from './TrackForm';
 import { Track } from './Track';
-import { PlaylistsContext } from '../../state/PlaylistsProvider';
-import { TracksContext } from '../../state/TracksProvider';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { addTrack, updateTrack, deleteTrack } from '../../state/tracks/actions';
+import { getTracks } from '../../state/tracks/selectors';
 
 export function Tracks() {
 
-    const { tracks, addNewTrack, editTrack, deleteTrack } = useContext(TracksContext);
+    const tracks = useSelector(getTracks)
+    const dispatch = useDispatch()
 
     const [open, setOpen] = useState(false);
     const [editedTrack, setEditedTrack] = useState({});
 
-    const { deleteTrackFromMultiplePlaylists } = useContext(PlaylistsContext);
 
     const handleOpen = () => {
         setOpen(true);
@@ -22,9 +24,11 @@ export function Tracks() {
 
     const handleSubmit = track => {
         if (!track.id) {
-            addNewTrack(track);
+            //addNewTrack(track);
+            dispatch(addTrack(track));
         } else {
-            editTrack(track);
+            //editTrack(track);
+            dispatch(updateTrack(track))
         }
     }
 
@@ -39,8 +43,9 @@ export function Tracks() {
     }
 
     const handleDelete = track => {
-        deleteTrack(track);
-        deleteTrackFromMultiplePlaylists(track.id);
+        dispatch(deleteTrack(track))
+        //deleteTrack(track);
+        //deleteTrackFromMultiplePlaylists(track.id);
     }
 
     return (

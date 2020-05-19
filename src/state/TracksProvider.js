@@ -1,39 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { exampleTracks } from '../domain/track';
+import React, { useState, useEffect } from "react";
+import { tracksStorage } from "../api/TracksStorage";
 
-
-//saját hook
 const useTracksService = () => {
-    //data
-    const [tracks, setTracks] = useState([]);
+    // Data
+    const [tracks, setTracks] = useState([])
 
     useEffect(() => {
-        const getAll = () => setTracks(exampleTracks);
-        getAll();
+        const getAll = async () => setTracks(await tracksStorage.getAll())
+        getAll()
     }, [])
 
-    //operations
-    const addNewTrack = track => {
-        setTracks([...tracks, { ...track, id: Date.now().toString() }]);
+    // Operations
+    const addNewTrack = async track => {
+        const newTrack = await tracksStorage.create(track)
+        setTracks([...tracks, newTrack])
+    }
+    const editTrack = async track => {
+        const updatedTrack = await tracksStorage.update(track)
+        setTracks(tracks.map(tr => tr.id !== track.id ? tr : updatedTrack))
+    }
+    const deleteTrack = async track => {
+        await tracksStorage.delete(track.id)
+        setTracks(tracks.filter(tr => tr.id !== track.id))
     }
 
-    const editTrack = track => {
-        setTracks(tracks.map(tr => tr.id !== track.id ? tr : track));
-    }
+    // Service
+    const tracksService = { tracks, addNewTrack, editTrack, deleteTrack }
 
-    const deleteTrack = track => {
-        setTracks(tracks.filter(tr => tr.id !== track.id));
-    }
-    //service
-    const tracksService = { tracks, addNewTrack, editTrack, deleteTrack };
-
-    return tracksService;
-
+    return tracksService
 }
 
-export const TracksContext = React.createContext();
+export const TracksContext = React.createContext()
 export const TracksProvider = ({ children }) => {
-
-    const tracksService = useTracksService();
+    const tracksService = useTracksService()
     return <TracksContext.Provider value={tracksService}>{children}</TracksContext.Provider>
 }
