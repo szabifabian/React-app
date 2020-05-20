@@ -8,6 +8,10 @@ import { PlaylistsProvider } from './state/PlaylistsProvider';
 import { TracksProvider } from './state/TracksProvider';
 import { configureStore } from './state/store';
 import { Provider } from 'react-redux';
+import { playlistsStorage } from './api/PlaylistsStorage';
+import { tracksStorage } from './api/TracksStorage';
+import { exampleTracks } from './domain/track'
+import { examplePlaylists } from './domain/playlist'
 
 
 const store = configureStore()
@@ -31,10 +35,10 @@ const render = () =>
   );
 
 async function start() {
-  // const newPlaylists = await playlistsStorage.fill(examplePlaylists)
+  //const newPlaylists = await playlistsStorage.fill(examplePlaylists)
   // console.log(newPlaylists);
-  // const newTracks = await tracksStorage.fill(exampleTracks)
-  // console.log(newTracks);
+  //const newTracks = await tracksStorage.fill(exampleTracks)
+  //console.log(newTracks);
 
   // const newPlaylist = await playlistsStorage.create({ title: 'Something', tracks: [] })
   // console.log(newPlaylist);

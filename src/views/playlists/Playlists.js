@@ -6,12 +6,11 @@ import { TrackList } from "./TrackList";
 import { TrackDetails } from "./TrackDetails";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getPlaylistsWithTracks } from "../../state/selectors";
-import { addPLaylist } from "../../state/playlists/actions";
+import { getPlaylistsWithTracks } from '../../state/selectors'
+import { addPlaylist } from "../../state/playlists/actions";
 
 
 export function Playlists() {
-
     const { playlistId: selectedPlaylistId, trackId: selectedTrackId } = useParams(); //url-bol olvassuk ki
 
 
@@ -22,7 +21,7 @@ export function Playlists() {
     const selectedTrack = selectedPlaylist && selectedPlaylist.tracks.find(tr => tr.id === selectedTrackId);
 
     const handleNewPlaylist = title => {
-        dispatch(addPLaylist(title))
+        dispatch(addPlaylist(title))
     }
 
     return (
